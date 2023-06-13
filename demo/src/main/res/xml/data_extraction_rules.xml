@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+  <cloud-backup>
+    <include domain="file" path="demo_prefs.preferences_pb"/>
+
+    <!--
+     Ensure that the encrypted preferences aren't backed-up, this is
+     because the KeyStore itself isn't backed-up so the keys aren't
+     guaranteed to exist on restore, especially if it's a new device.
+    -->
+    <exclude domain="file" path="demo_prefs_local.preferences_pb"/>
+  </cloud-backup>
+
+  <device-transfer>
+    <include domain="file" path="demo_prefs.preferences_pb"/>
+
+    <!--
+     Ensure that the encrypted preferences aren't transferred, this is
+     because the KeyStore itself isn't transferred so the keys won't
+     exist on the target device
+    -->
+    <exclude domain="file" path="demo_prefs_local.preferences_pb"/>
+  </device-transfer>
+</data-extraction-rules>

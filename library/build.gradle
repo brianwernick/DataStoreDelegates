@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+afterEvaluate {
+  apply from: '../gradle/release/publish.gradle'
+}
+
+dependencies {
+  api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+  api "androidx.datastore:datastore-preferences:1.0.0"
+
+
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation "org.robolectric:robolectric:4.10"
+}
+
+android {
+  compileSdkVersion 33
+
+  namespace 'com.devbrackets.android.datastore'
+
+  defaultConfig {
+    minSdkVersion 23
+    targetSdkVersion 33
+  }
+
+  sourceSets {
+    main.java.srcDirs += "src/main/kotlin"
+    test.java.srcDirs += "src/test/kotlin"
+  }
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+    }
+  }
+
+  lint {
+    abortOnError false
+  }
+}
