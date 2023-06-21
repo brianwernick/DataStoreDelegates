@@ -8,24 +8,27 @@ import kotlin.reflect.KClass
  * [Enum] in preferences. The [String] value represents
  * the `name` of the [Enum]
  */
-class EnumValueConverter<T: Enum<T>>(
-  private val enumClass: KClass<T>,
-  private val errorHandler: ErrorHandler<T> = DefaultErrorHandler()
-): ValueConverter<T, String> {
-  override fun toConverted(originalValue: T): String {
-    return originalValue.name
+class EnumValueConverter<E: Enum<E>, T: E?>(
+  private val enumClass: KClass<E>,
+  private val errorHandler: ErrorHandler<E, T> = DefaultErrorHandler<E,T>()
+): ValueConverter<T, String?> {
+  override fun toConverted(originalValue: T): String? {
+    return originalValue?.name
   }
 
-  override fun toOriginal(convertedValue: String): T {
-    return enumClass.java.enumConstants?.first {
-      it.name.equals(convertedValue, true)
-    } ?: errorHandler.onUnknownName(convertedValue, enumClass)
+  @Suppress("UNCHECKED_CAST")
+  override fun toOriginal(convertedValue: String?): T {
+    return convertedValue?.let { name ->
+      enumClass.java.enumConstants?.firstOrNull {
+        it.name.equals(name, true)
+      } ?: errorHandler.onUnknownName(convertedValue, enumClass)
+    } as T
   }
 
   /**
    * Defines how [EnumValueConverter] errors should be handled.
    */
-  fun interface ErrorHandler<T: Enum<T>> {
+  fun interface ErrorHandler<E: Enum<E>, T:E?> {
     /**
      * Called when a name (stored value) doesn't map to a defined Enum value for [enumClass].
      * This can happen if the name of a value is changed after it was stored.
@@ -34,15 +37,15 @@ class EnumValueConverter<T: Enum<T>>(
      * @param enumClass the [KClass] representing the destination Enum
      * @return The Enum value to use for the given [name]
      */
-    fun onUnknownName(name: String, enumClass: KClass<T>): T
+    fun onUnknownName(name: String?, enumClass: KClass<E>): T
   }
 
   /**
    * An implementation of [ErrorHandler] that throws an [IllegalArgumentException] when
    * any error occurs.
    */
-  class DefaultErrorHandler<T: Enum<T>>: ErrorHandler<T> {
-    override fun onUnknownName(name: String, enumClass: KClass<T>): T {
+  class DefaultErrorHandler<E: Enum<E>, T: E?>: ErrorHandler<E, T> {
+    override fun onUnknownName(name: String?, enumClass: KClass<E>): T {
       throw IllegalArgumentException("No Enum value of \"$name\" can be found for ${enumClass.simpleName}")
     }
   }
