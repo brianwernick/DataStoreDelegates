@@ -8,8 +8,8 @@ import com.devbrackets.android.datastore.converter.core.EnumValueConverter
 import com.devbrackets.android.datastore.converter.core.StringBytesValueConverter
 import com.devbrackets.android.datastore.converter.crypto.EncryptedValueConverter
 import com.devbrackets.android.datastore.converter.then
-import com.devbrackets.android.datastore.delegate.value
-import com.devbrackets.android.datastore.flow
+import com.devbrackets.android.datastore.preference.delegate.value
+import com.devbrackets.android.datastore.preference.flow
 import com.devbrackets.android.datastoredemo.data.model.Month
 import com.devbrackets.android.datastoredemo.data.token.DemoAccountTokenValueConverter
 
