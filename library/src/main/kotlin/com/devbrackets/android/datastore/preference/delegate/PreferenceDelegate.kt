@@ -1,15 +1,13 @@
-package com.devbrackets.android.datastore.delegate
+package com.devbrackets.android.datastore.preference.delegate
 
 import androidx.annotation.WorkerThread
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.devbrackets.android.datastore.converter.ValueConverter
 import com.devbrackets.android.datastore.converter.core.NoOpValueConverter
-import com.devbrackets.android.datastore.getOrDefault
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import com.devbrackets.android.datastore.preference.getOrDefault
+import com.devbrackets.android.datastore.value
 import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 /**
  * A Kotlin delegate to read and write values in a [Preferences] [DataStore].
@@ -27,12 +25,12 @@ import kotlin.reflect.KProperty
  * @param defaultValue The value to return when [key] isn't contained by the [DataStore]
  */
 @WorkerThread
-inline fun <reified T : Any?> DataStore<Preferences>.value(
+inline fun <reified T> DataStore<Preferences>.value(
   key: String,
   defaultValue: T
 ): ReadWriteProperty<Any, T> {
   return value(
-    key = key,
+    key = getPreferencesKey(key),
     defaultValue = defaultValue,
     converter = NoOpValueConverter()
   )
@@ -57,38 +55,57 @@ inline fun <reified T : Any?> DataStore<Preferences>.value(
  *                    are `Int`, `Double`, `String`, `Boolean`, `Float`, and `Long`.
  */
 @WorkerThread
-inline fun <reified T, reified S> DataStore<Preferences>.value(
+inline fun <T, reified S> DataStore<Preferences>.value(
   key: String,
   defaultValue: T,
   converter: ValueConverter<T, S>
 ): ReadWriteProperty<Any, T> {
-  return object : ReadWriteProperty<Any, T> {
-    private val prefKey: Preferences.Key<S> = getPreferencesKey(key)
+  return value(
+    key = getPreferencesKey(key),
+    defaultValue = defaultValue,
+    converter = converter
+  )
+}
 
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-      runBlocking {
-        set(value)
+/**
+ * A Kotlin delegate to read and write values in a [Preferences] [DataStore] with value transformations.
+ * For example
+ * ```kotlin
+ * var theme by dataStore.value("uiTheme", Theme.FOLLOW_SYSTEM, EnumValueConverter(Theme::class))
+ * ```
+ *
+ * **NOTE:**
+ * Reading a writing [DataStore] values can potentially be slower than expected and it is recommended
+ * to perform reads/writes (get/set) on threads other than Main/UI.
+ *
+ * @param key The [Preferences.Key] used to store and retrieve the preference
+ * @param defaultValue The value to return when [key] isn't contained by the [DataStore]
+ * @param converter The [ValueConverter] to convert between the use type (e.g. an Enum)
+ *                    and a format that the can be stored in preferences. Supported preference types
+ *                    are `Int`, `Double`, `String`, `Boolean`, `Float`, and `Long`.
+ */
+@WorkerThread
+fun <T, S> DataStore<Preferences>.value(
+  key: Preferences.Key<S>,
+  defaultValue: T,
+  converter: ValueConverter<T, S>
+): ReadWriteProperty<Any, T> {
+  val defaultStoreValue = converter.toConverted(defaultValue)
+
+  return value(
+    valueSetter = { store, value ->
+      store.toMutablePreferences().apply {
+        this[key] = value
       }
-    }
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-      return runBlocking {
-        data.first().getOrDefault(
-          key = prefKey,
-          defaultValue = defaultValue,
-          converter = converter
-        )
-      }
-    }
-
-    private suspend fun set(value: T): T {
-      this@value.edit { prefs ->
-        prefs[prefKey] = converter.toConverted(value)
-      }
-
-      return value
-    }
-  }
+    },
+    valueGetter = { store ->
+      store.getOrDefault(
+        key = key,
+        defaultValue = defaultStoreValue
+      )
+    },
+    converter = converter
+  )
 }
 
 /**
