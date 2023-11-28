@@ -1,3 +1,5 @@
+![Maven Central](https://img.shields.io/maven-central/v/com.devbrackets.android/datastore)
+
 DataStore Delegates
 ============
 Property delegation and extensions for Android's `DataStore<Preferences>`s, including:
@@ -16,7 +18,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.devbrackets.android:datastore:0.0.1-preview01'
+  implementation 'com.devbrackets.android:datastore:1.0.0-preview01'
 }
 ```
 
@@ -57,4 +59,4 @@ Attribution
 * Uses [DataStore](https://developer.android.com/jetpack/androidx/releases/datastore) licensed under [Apache 2.0][Apache 2.0]
 
  [Apache 2.0]: http://www.apache.org/licenses/LICENSE-2.0
- [MavenCentral]: https://s01.oss.sonatype.org/#nexus-search;quick~com.devbrackets.android.datastore
+ [MavenCentral]: https://central.sonatype.com/artifact/com.devbrackets.android/datastore
