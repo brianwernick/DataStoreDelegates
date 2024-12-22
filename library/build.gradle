@@ -1,27 +1,28 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+plugins {
+  alias libs.plugins.android.library
+  alias libs.plugins.kotlin.android
+}
 
 afterEvaluate {
   apply from: '../gradle/release/publish.gradle'
 }
 
 dependencies {
-  api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-  api "androidx.datastore:datastore-preferences:1.0.0"
+  api libs.kotlin.stdlib.jdk7
+  api libs.datastore.preferences
 
-
-  testImplementation 'junit:junit:4.13.2'
-  testImplementation "org.robolectric:robolectric:4.10"
+  testImplementation libs.junit
+  testImplementation libs.robolectric
 }
 
 android {
-  compileSdkVersion 33
+  compileSdk 35
 
   namespace 'com.devbrackets.android.datastore'
 
   defaultConfig {
     minSdkVersion 23
-    targetSdkVersion 33
+    targetSdkVersion 35
   }
 
   sourceSets {
@@ -29,13 +30,17 @@ android {
     test.java.srcDirs += "src/test/kotlin"
   }
 
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_1_8
+  buildFeatures {
+    buildConfig true
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_11
   }
 
   testOptions {
