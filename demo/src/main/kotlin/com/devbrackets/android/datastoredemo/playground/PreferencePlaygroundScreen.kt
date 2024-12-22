@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.OutlinedTextField
@@ -135,7 +136,8 @@ private fun ScreenScaffold(
       TopAppBar(
         title = {
           Text(text = "DataStore Delegates Demo")
-        }
+        },
+        windowInsets = WindowInsets.statusBars
       )
     },
     content = content
@@ -166,7 +168,7 @@ private fun MonthSelector(
   onMonthSelected: (Month) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  val availableMonths = remember { Month.values().toList() }
+  val availableMonths = remember { Month.entries }
   val selectedMonth = remember { mutableStateOf(month.value) }
   LaunchedEffect(month.value) {
     selectedMonth.value = month.value

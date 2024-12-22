@@ -10,13 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.devbrackets.android.datastoredemo.common.DemoTheme
 import com.devbrackets.android.datastoredemo.data.Preferences
 import com.devbrackets.android.datastoredemo.navigation.DemoNavHost
 import com.devbrackets.android.datastoredemo.playground.PreferencePlaygroundScreen
 import com.devbrackets.android.datastoredemo.playground.PreferencePlaygroundViewModel
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @ExperimentalAnimationApi
 class MainActivity : AppCompatActivity() {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
   @Composable
   fun Content() {
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
 
     DemoNavHost(
       navController = navController,

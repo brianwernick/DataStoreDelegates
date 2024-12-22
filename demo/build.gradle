@@ -1,36 +1,34 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-
-ext {
-  composeVersion = "1.4.3"
-  composeCompilerVersion = "1.4.7"
+plugins {
+  alias libs.plugins.android.application
+  alias libs.plugins.kotlin.android
+  alias libs.plugins.compose.compiler
 }
 
 dependencies {
   implementation project(':library')
 
   // Misc
-  implementation 'androidx.core:core-ktx:1.10.1'
-  implementation 'androidx.appcompat:appcompat:1.6.1'
+  implementation libs.core.ktx
+  implementation libs.appcompat
 
   // Jetpack Compose UI
-  implementation "androidx.compose.ui:ui:$composeVersion"
-  implementation "androidx.compose.ui:ui-tooling:$composeVersion"
-  implementation "androidx.compose.ui:ui-tooling-preview:$composeVersion"
-  implementation "androidx.compose.material:material:$composeVersion"
-  implementation 'androidx.activity:activity-compose:1.7.2'
-  implementation "androidx.navigation:navigation-compose:2.6.0"
-  implementation "com.google.accompanist:accompanist-navigation-animation:0.30.1"
+  implementation libs.ui
+  implementation libs.ui.tooling
+  implementation libs.ui.tooling.preview
+  implementation libs.material
+  implementation libs.material.icons.core
+  implementation libs.activity.compose
+  implementation libs.navigation.compose
 }
 
 android {
   namespace 'com.devbrackets.android.datastoredemo'
-  compileSdkVersion 33
+  compileSdk 35
 
   defaultConfig {
     applicationId "com.devbrackets.android.datastoredemo"
     minSdkVersion 23
-    targetSdkVersion 33
+    targetSdkVersion 35
     versionCode 1
     versionName "1.0.0"
   }
@@ -39,22 +37,18 @@ android {
     main.java.srcDirs += "src/main/kotlin"
   }
 
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_1_8
-  }
-
   buildFeatures {
     compose true
     viewBinding true
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
   }
 
-  composeOptions {
-    kotlinCompilerExtensionVersion composeCompilerVersion
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_11
   }
 
   lint {
