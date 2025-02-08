@@ -1,6 +1,8 @@
 plugins {
   alias libs.plugins.android.library
   alias libs.plugins.kotlin.android
+  alias libs.plugins.maven.publish
+  alias libs.plugins.signing
 }
 
 afterEvaluate {
@@ -16,13 +18,13 @@ dependencies {
 }
 
 android {
-  compileSdk 35
+  compileSdk = 36
 
   namespace 'com.devbrackets.android.datastore'
 
   defaultConfig {
     minSdkVersion 23
-    targetSdkVersion 35
+    targetSdkVersion 36
   }
 
   sourceSets {

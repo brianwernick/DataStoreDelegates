@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
  */
 class EnumValueConverter<E: Enum<E>, T: E?>(
   private val enumClass: KClass<E>,
-  private val errorHandler: ErrorHandler<E, T> = DefaultErrorHandler<E,T>()
+  private val errorHandler: ErrorHandler<E, T> = DefaultErrorHandler()
 ): ValueConverter<T, String?> {
   override fun toConverted(originalValue: T): String? {
     return originalValue?.name
