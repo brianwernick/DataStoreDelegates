@@ -23,12 +23,12 @@ dependencies {
 
 android {
   namespace 'com.devbrackets.android.datastoredemo'
-  compileSdk 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId "com.devbrackets.android.datastoredemo"
     minSdkVersion 23
-    targetSdkVersion 35
+    targetSdkVersion 36
     versionCode 1
     versionName "1.0.0"
   }
