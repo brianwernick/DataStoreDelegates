@@ -13,7 +13,7 @@ import com.devbrackets.android.datastore.converter.core.NonNullValueConverter
  * val chainedConverter = EncryptedValueConverter().then(Base64ValueConverter())
  * ```
  *
- * This method is short-hand for the [ChainedValueConverter].
+ * This method is shorthand for the [ChainedValueConverter].
  *
  * @param nextConverter The [ValueConverter] that should be called after the target [ValueConverter]
  */
@@ -25,7 +25,7 @@ fun <ORIGINAL, INTERMEDIATE, CONVERTED> ValueConverter<ORIGINAL, INTERMEDIATE>.t
 
 /**
  * Converts the source [ValueConverter] to a [ValueConverter] with non-nullable types.
- * This method is short-hand for the [NonNullValueConverter].
+ * This method is shorthand for the [NonNullValueConverter].
  *
  * @param errorHandler The [NonNullValueConverter.ErrorHandler] to use for unexpected `null` values
  */
