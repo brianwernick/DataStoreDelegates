@@ -18,13 +18,12 @@ dependencies {
 }
 
 android {
-  compileSdk = 36
+  compileSdk = 37
 
   namespace 'com.devbrackets.android.datastore'
 
   defaultConfig {
     minSdkVersion 23
-    targetSdkVersion 36
   }
 
   sourceSets {
@@ -49,9 +48,11 @@ android {
     unitTests {
       includeAndroidResources = true
     }
+    targetSdk 37
   }
 
   lint {
     abortOnError false
+    targetSdk 37
   }
 }
