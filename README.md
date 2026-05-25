@@ -38,7 +38,7 @@ val userColorFlow = dataStore.flow("userColor", Color.valueOf(0xFFFFFFFF), Color
 
 License
 -------
-    Copyright 2023 DataStore Delegates Contributors
+    Copyright 2026 DataStore Delegates Contributors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
